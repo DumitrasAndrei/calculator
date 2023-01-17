@@ -5,11 +5,13 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QMes
 from PyQt5 import QtCore
 
 
+# Cream clasa App care va contine componentele vizuale si metodele.
 class App(QMainWindow):
 
     def __init__(self):
         super().__init__()
 
+        # Definim componentele si continutul lor.
         self.button0 = QPushButton('0', self)
         self.button1 = QPushButton('1', self)
         self.button2 = QPushButton('2', self)
@@ -29,7 +31,10 @@ class App(QMainWindow):
         self.buttonDivision = QPushButton('/', self)
         self.buttonDot = QPushButton('.', self)
 
+        # Definim label-ul unde o sa avem rezultatele.
         self.resultLabel = QLabel(self)
+
+        # Definim dimensiunile ferestrei pentru calculator.
         self.title = 'Calculator'
         self.left = 500
         self.top = 250
@@ -39,9 +44,11 @@ class App(QMainWindow):
         self.initUI()
 
     def initUI(self):
+        # Definim interfata calculatorului dupa dimensiunile setate mai sus, unde o sa fie componentele.
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
 
+        # Definim locul componentelor si dimensiunea lor in fereastra.
         self.resultLabel.move(10, 10)
         self.resultLabel.resize(180, 20)
         self.resultLabel.setStyleSheet("background-color: lightgrey")
