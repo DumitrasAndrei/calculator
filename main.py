@@ -55,7 +55,8 @@ class App(QMainWindow):
         self.resultLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.resultLabel.setText(self.labelText)
 
-        # Create a button in the window
+        # prin self.[denumire_componenta].clicked.connect(lambda:self.[denumire_metoda])
+        # adaugam un 'event listener' pe componenta pentru apelarea metodelor corespunzatoare
         self.button0.move(10, 50)
         self.button0.resize(30, 30)
         self.button0.clicked.connect(lambda: self.setNumber(0))
@@ -136,17 +137,23 @@ class App(QMainWindow):
         self.show()
 
     @pyqtSlot()
+    # metoda care se apeleaza la apasarea unei cifre
+    # si ne adauga in variabila labelText cifra corespunzatoare
     def setNumber(self, nr):
         self.labelText += str(nr)
         self.resultLabel.setText(self.labelText)
         QApplication.processEvents()
 
+    # metoda care se apeleaza la apasarea unui operator
+    # si ne adauga in variabila labelText operatorul corespunzator
     def setOperator(self, operator):
         if not self.labelText == "" and not self.labelText[-1] in "*/%+-=. ":
             self.labelText += operator
             self.resultLabel.setText(self.labelText)
             QApplication.processEvents()
 
+    # metoda care se apeleaza la apasarea butonului 'egal'
+    # si ne afiseaza rezultatul operatiilor din labelText
     def resultOperation(self):
         print(self.labelText[-1])
         if self.labelText == "":
@@ -164,16 +171,22 @@ class App(QMainWindow):
         QApplication.processEvents()
         print(result)
 
+    # metoda care se apeleaza la apasarea butonului 'CE'
+    # aceasta metoda sterge tot continulul din labelText
     def clearField(self):
         self.labelText = ""
         self.resultLabel.setText(self.labelText)
         QApplication.processEvents()
 
+    # metoda care se apeleaza la apasarea butonului 'C'
+    # aceasta metoda sterge cate un caracter per click din labelText
     def clearOne(self):
         self.labelText = self.labelText[:-1]
         self.resultLabel.setText(self.labelText)
         QApplication.processEvents()
 
+    # metoda care se apeleaza la apasarea butonului '.'
+    # aceasta adauga '.' in variabila labelText
     def setDot(self):
         if self.labelText == "" or self.labelText[-1] in "%+-=. ":
             self.labelText = ""
