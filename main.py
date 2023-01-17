@@ -1,6 +1,7 @@
 import sys
 
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QMessageBox
 from PyQt5 import QtCore
 
 
@@ -50,64 +51,131 @@ class App(QMainWindow):
         # Create a button in the window
         self.button0.move(10, 50)
         self.button0.resize(30, 30)
+        self.button0.clicked.connect(lambda: self.setNumber(0))
 
         self.button1.move(40, 50)
         self.button1.resize(30, 30)
+        self.button1.clicked.connect(lambda: self.setNumber(1))
 
         self.button2.move(70, 50)
         self.button2.resize(30, 30)
+        self.button2.clicked.connect(lambda: self.setNumber(2))
 
         self.button3.move(10, 80)
         self.button3.resize(30, 30)
+        self.button3.clicked.connect(lambda: self.setNumber(3))
 
         # Create a button in the window
         self.button4.move(40, 80)
         self.button4.resize(30, 30)
+        self.button4.clicked.connect(lambda: self.setNumber(4))
 
         self.button5.move(70, 80)
         self.button5.resize(30, 30)
+        self.button5.clicked.connect(lambda: self.setNumber(5))
 
         self.button6.move(10, 110)
         self.button6.resize(30, 30)
+        self.button6.clicked.connect(lambda: self.setNumber(6))
 
         self.button7.move(40, 110)
         self.button7.resize(30, 30)
+        self.button7.clicked.connect(lambda: self.setNumber(7))
 
         self.button8.move(70, 110)
         self.button8.resize(30, 30)
+        self.button8.clicked.connect(lambda: self.setNumber(8))
 
         self.button9.move(40, 140)
         self.button9.resize(30, 30)
+        self.button9.clicked.connect(lambda: self.setNumber(9))
 
         self.buttonPlus.move(130, 50)
         self.buttonPlus.resize(30, 30)
+        self.buttonPlus.clicked.connect(lambda: self.setOperator("+"))
 
         self.buttonMinus.move(160, 50)
         self.buttonMinus.resize(30, 30)
+        self.buttonMinus.clicked.connect(lambda: self.setOperator("-"))
 
         self.buttonEgal.move(70, 140)
         self.buttonEgal.resize(30, 30)
+        self.buttonEgal.clicked.connect(lambda: self.resultOperation())
         self.show()
 
         self.buttonMultiply.move(130, 80)
         self.buttonMultiply.resize(30, 30)
+        self.buttonMultiply.clicked.connect(lambda: self.setOperator("*"))
         self.show()
 
         self.buttonDivision.move(160, 80)
         self.buttonDivision.resize(30, 30)
+        self.buttonDivision.clicked.connect(lambda: self.setOperator("/"))
         self.show()
 
         self.buttonClearAll.move(160, 110)
         self.buttonClearAll.resize(30, 30)
+        self.buttonClearAll.clicked.connect(lambda: self.clearField())
         self.show()
 
         self.buttonClearOne.move(130, 110)
         self.buttonClearOne.resize(30, 30)
+        self.buttonClearOne.clicked.connect(lambda: self.clearOne())
         self.show()
 
         self.buttonDot.move(10, 140)
         self.buttonDot.resize(30, 30)
+        self.buttonDot.clicked.connect(lambda: self.setDot())
         self.show()
+
+    @pyqtSlot()
+    def setNumber(self, nr):
+        self.labelText += str(nr)
+        self.resultLabel.setText(self.labelText)
+        QApplication.processEvents()
+
+    def setOperator(self, operator):
+        if not self.labelText == "" and not self.labelText[-1] in "*/%+-=. ":
+            self.labelText += operator
+            self.resultLabel.setText(self.labelText)
+            QApplication.processEvents()
+
+    def resultOperation(self):
+        print(self.labelText[-1])
+        if self.labelText == "":
+            return
+        if self.labelText[-1] == "+" or self.labelText[-1] == "/" or self.labelText[-1] == "*" or self.labelText[
+            -1] == '-' or self.labelText[-1] == "+-" \
+                or self.labelText[-1] == "-+" or self.labelText[-1] == "Invalid operation":
+            self.labelText = ""
+            self.resultLabel.setText(self.labelText)
+            QMessageBox.about(self, "Error", "Invalid operation")
+            return
+        result = str(eval(self.labelText))
+        self.labelText = result
+        self.resultLabel.setText(result)
+        QApplication.processEvents()
+        print(result)
+
+    def clearField(self):
+        self.labelText = ""
+        self.resultLabel.setText(self.labelText)
+        QApplication.processEvents()
+
+    def clearOne(self):
+        self.labelText = self.labelText[:-1]
+        self.resultLabel.setText(self.labelText)
+        QApplication.processEvents()
+
+    def setDot(self):
+        if self.labelText == "" or self.labelText[-1] in "%+-=. ":
+            self.labelText = ""
+            self.resultLabel.setText(self.labelText)
+            QMessageBox.about(self, "Error", "Invalid operation")
+            return
+        self.labelText += '.'
+        self.resultLabel.setText(self.labelText)
+        QApplication.processEvents()
 
 
 if __name__ == '__main__':
